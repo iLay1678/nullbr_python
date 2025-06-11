@@ -1,5 +1,6 @@
 # nullbr-python
 
+![PyPI - Version](https://img.shields.io/pypi/v/nullbr-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
@@ -71,6 +72,19 @@ if movie.has_115:
 
 ### 命令行使用
 
+使用uv：
+```bash
+# 搜索
+uv run python -m nullbr_python.cli --app-id YOUR_APP_ID search "复仇者联盟"
+
+# 获取电影信息
+uv run python -m nullbr_python.cli --app-id YOUR_APP_ID movie 299536
+
+# 获取电视剧信息
+uv run python -m nullbr_python.cli --app-id YOUR_APP_ID tv 1396
+```
+
+如果已安装为全局包：
 ```bash
 # 搜索
 nullbr --app-id YOUR_APP_ID search "复仇者联盟"
