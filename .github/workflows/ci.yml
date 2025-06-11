@@ -47,9 +47,3 @@ jobs:
       run: |
         uv run python -c "from nullbr_python import NullbrSDK; print('Package import successful!')"
         
-    - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.11'
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: false 
