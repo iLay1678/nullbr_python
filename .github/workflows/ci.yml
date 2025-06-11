@@ -32,18 +32,18 @@ jobs:
       
     - name: Run tests
       run: |
-        uv run pytest --cov=nullbr_python --cov-report=xml || echo "No tests found, skipping..."
+        uv run pytest --cov=nullbr --cov-report=xml || echo "No tests found, skipping..."
         
     - name: Check code formatting
       run: |
-        uv run black --check nullbr_python/
-        uv run isort --check-only nullbr_python/
+        uv run black --check nullbr/
+        uv run isort --check-only nullbr/
         
     - name: Test CLI
       run: |
-        uv run python -m nullbr_python.cli --help
+        uv run python -m nullbr.cli --help
         
     - name: Test package import
       run: |
-        uv run python -c "from nullbr_python import NullbrSDK; print('Package import successful!')"
+        uv run python -c "from nullbr import NullbrSDK; print('Package import successful!')"
         

@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "nullbr-python"
-version = "0.1.3"
+name = "nullbr"
+version = "1.0.0"
 description = "Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK"
 readme = "README.md"
 license = {text = "MIT"}
@@ -51,10 +51,10 @@ Repository = "https://github.com/iLay1678/nullbr_python"
 "Bug Tracker" = "https://github.com/iLay1678/nullbr_python/issues"
 
 [project.scripts]
-nullbr = "nullbr_python.cli:main"
+nullbr = "nullbr.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["nullbr_python"]
+packages = ["nullbr"]
 
 [tool.black]
 line-length = 88

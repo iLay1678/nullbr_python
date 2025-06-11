@@ -6,7 +6,7 @@ nullbr-python 基本使用示例
 """
 
 import os
-from nullbr_python import NullbrSDK
+from nullbr import NullbrSDK
 
 
 def main():

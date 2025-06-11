@@ -1,6 +1,6 @@
 # nullbr-python
 
-![PyPI - Version](https://img.shields.io/pypi/v/nullbr-python)
+![PyPI - Version](https://img.shields.io/pypi/v/nullbr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
@@ -21,20 +21,20 @@ Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK
 ### 使用 uv 安装
 
 ```bash
-uv add nullbr-python
+uv add nullbr
 ```
 
 ### 使用 pip 安装
 
 ```bash
-pip install nullbr-python
+pip install nullbr
 ```
 
 ### 从源码安装
 
 ```bash
-git clone https://github.com/iLay1678/nullbr_python.git
-cd nullbr_python
+git clone https://github.com/iLay1678/nullbr-python.git
+cd nullbr
 uv sync
 uv pip install -e .
 ```
@@ -44,7 +44,7 @@ uv pip install -e .
 ### 基本用法
 
 ```python
-from nullbr_python import NullbrSDK
+from nullbr import NullbrSDK
 
 # 初始化SDK
 sdk = NullbrSDK(
@@ -75,13 +75,13 @@ if movie.has_115:
 使用uv：
 ```bash
 # 搜索
-uv run python -m nullbr_python.cli --app-id YOUR_APP_ID search "复仇者联盟"
+uv run python -m nullbr.cli --app-id YOUR_APP_ID search "复仇者联盟"
 
 # 获取电影信息
-uv run python -m nullbr_python.cli --app-id YOUR_APP_ID movie 299536
+uv run python -m nullbr.cli --app-id YOUR_APP_ID movie 299536
 
 # 获取电视剧信息
-uv run python -m nullbr_python.cli --app-id YOUR_APP_ID tv 1396
+uv run python -m nullbr.cli --app-id YOUR_APP_ID tv 1396
 ```
 
 如果已安装为全局包：
@@ -179,8 +179,8 @@ pip install -e ".[dev]"
 ### 代码格式化
 
 ```bash
-uv run black nullbr_python/
-uv run isort nullbr_python/
+uv run black nullbr/
+uv run isort nullbr/
 ```
 
 ### 运行测试

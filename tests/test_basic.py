@@ -2,9 +2,9 @@
 基本测试用例
 """
 
-import pytest
-from nullbr_python import NullbrSDK
-from nullbr_python.models.base import MediaItem
+# import pytest
+from nullbr import NullbrSDK
+from nullbr.models.base import MediaItem
 
 
 def test_import():
