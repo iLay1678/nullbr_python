@@ -1,9 +1,38 @@
+"""
+nullbr-python: Python SDK for Nullbr API
+
+A Python SDK for accessing the Nullbr API to search and retrieve information
+about movies, TV shows, collections, and their resources.
+"""
+
+__version__ = "0.1.0"
+__author__ = "nullbr-python"
+__license__ = "MIT"
+
 import httpx
 from .models.base import MediaItem
 from .models.search import SearchResponse, ListResponse
 from .models.movie import Movie115Item, MovieResponse, Movie115Response, MovieMagnetItem, MovieMagnetResponse, MovieEd2kItem, MovieEd2kResponse
 from .models.tv import TVResponse, TV115Response, TVSeasonResponse, TVSeasonMagnetResponse
 from .models.collection import CollectionResponse, Collection115Response
+
+# 导出主要的类和函数
+__all__ = [
+    "NullbrSDK",
+    "MediaItem",
+    "SearchResponse",
+    "ListResponse",
+    "MovieResponse",
+    "Movie115Response",
+    "MovieMagnetResponse",
+    "MovieEd2kResponse",
+    "TVResponse",
+    "TV115Response",
+    "TVSeasonResponse",
+    "TVSeasonMagnetResponse",
+    "CollectionResponse",
+    "Collection115Response",
+]
 
 class NullbrSDK:
     def __init__(self, app_id: str, api_key: str = None, base_url: str = "https://api.nullbr.eu.org"):
@@ -201,13 +230,9 @@ class NullbrSDK:
         
         items = [
             MovieMagnetItem(
-                name=item["name"],
+                title=item["title"],
                 size=item["size"],
-                magnet=item["magnet"],
-                resolution=item["resolution"],
-                source=item["source"],
-                quality=item["quality"],
-                zh_sub=item["zh_sub"]
+                magnet=item["magnet"]
             )
             for item in data["magnet"]
         ]
@@ -215,7 +240,7 @@ class NullbrSDK:
         return MovieMagnetResponse(
             id=data["id"],
             media_type=data["media_type"],
-            magnet=items
+            items=items
         )
 
     def get_movie_ed2k(self, tmdbid: int) -> MovieEd2kResponse:
@@ -235,13 +260,9 @@ class NullbrSDK:
         
         items = [
             MovieEd2kItem(
-                name=item["name"],
+                title=item["title"],
                 size=item["size"],
-                ed2k=item["ed2k"],
-                resolution=item["resolution"],
-                source=item["source"],
-                quality=item["quality"],
-                zh_sub=item["zh_sub"]
+                ed2k=item["ed2k"]
             )
             for item in data["ed2k"]
         ]
@@ -249,11 +270,11 @@ class NullbrSDK:
         return MovieEd2kResponse(
             id=data["id"],
             media_type=data["media_type"],
-            ed2k=items
+            items=items
         )
 
     def get_collection(self, tmdbid: int) -> CollectionResponse:
-        """获取电影合集详细信息
+        """获取合集详细信息
         
         Args:
             tmdbid: 合集的TMDB ID
@@ -266,28 +287,13 @@ class NullbrSDK:
         """
         data = self._request("GET", f"{self.base_url}/collection/{tmdbid}")
         
-        items = [
-            MediaItem(
-                media_type=item["media_type"],
-                tmdbid=item["tmdbid"],
-                poster="https://image.tmdb.org/t/p/w154/" + item["poster"] ,
-                title=item["title"],
-                overview=item["overview"],
-                vote_average=item.get("vote_average"),
-                release_date=item.get("release_date")
-            )
-            for item in data["items"]
-        ]
-        
         return CollectionResponse(
             id=data["id"],
-            poster="https://image.tmdb.org/t/p/w154/" + data["poster"] ,
-            title=data["title"],
+            name=data["name"],
             overview=data["overview"],
-            vote=data["vote"],
-            release_date=data["release_date"],
-            has_115=bool(data["115-flg"]),
-            items=items
+            poster="https://image.tmdb.org/t/p/w154/" + data["poster"] ,
+            backdrop="https://image.tmdb.org/t/p/w300/" + data["backdrop"],
+            has_115=bool(data["115-flg"])
         )
 
     def get_tv(self, tmdbid: int) -> TVResponse:
@@ -307,15 +313,11 @@ class NullbrSDK:
         return TVResponse(
             id=data["id"],
             poster="https://image.tmdb.org/t/p/w154/" + data["poster"] ,
-            title=data["title"],
+            name=data["name"],
             overview=data["overview"],
             vote=data["vote"],
-            release_date=data["release_date"],
-            number_of_seasons=data["number_of_seasons"],
-            has_115=bool(data["115-flg"]),
-            has_magnet=bool(data["magnet-flg"]),
-            has_ed2k=bool(data["ed2k-flg"]),
-            has_video=bool(data["video-flg"])
+            first_air_date=data["first_air_date"],
+            has_115=bool(data["115-flg"])
         )
 
     def get_tv_115(self, tmdbid: int, page: int = 1) -> TV115Response:
@@ -355,7 +357,7 @@ class NullbrSDK:
         )
 
     def get_collection_115(self, tmdbid: int, page: int = 1) -> Collection115Response:
-        """获取电影合集网盘资源
+        """获取合集网盘资源
         
         Args:
             tmdbid: 合集的TMDB ID
@@ -368,6 +370,9 @@ class NullbrSDK:
             requests.exceptions.HTTPError: 当API返回非200状态码时
             ValueError: 当未设置API KEY时
         """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+            
         data = self._request("GET", f"{self.base_url}/collection/{tmdbid}/115", {"page": page})
         
         items = [
@@ -388,7 +393,7 @@ class NullbrSDK:
         )
 
     def get_tv_season(self, tmdbid: int, season_number: int) -> TVSeasonResponse:
-        """获取剧集单季详细信息
+        """获取剧集某一季的详细信息
         
         Args:
             tmdbid: 剧集的TMDB ID
@@ -403,19 +408,18 @@ class NullbrSDK:
         data = self._request("GET", f"{self.base_url}/tv/{tmdbid}/season/{season_number}")
         
         return TVSeasonResponse(
-            tv_show_id=data["tv_show_id"],
             season_number=data["season_number"],
             name=data["name"],
             overview=data["overview"],
+            poster="https://image.tmdb.org/t/p/w154/" + data["poster"] ,
             air_date=data["air_date"],
-            poseter=data["poseter"],
             episode_count=data["episode_count"],
             vote_average=data["vote_average"],
-            has_magnet=data["magnet-flg"] == 1
+            has_magnet=bool(data["magnet-flg"])
         )
 
     def get_tv_season_magnet(self, tmdbid: int, season_number: int) -> TVSeasonMagnetResponse:
-        """获取剧集季磁力资源
+        """获取剧集某一季的磁力资源
         
         Args:
             tmdbid: 剧集的TMDB ID
@@ -428,24 +432,22 @@ class NullbrSDK:
             requests.exceptions.HTTPError: 当API返回非200状态码时
             ValueError: 当未设置API KEY时
         """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+            
         data = self._request("GET", f"{self.base_url}/tv/{tmdbid}/season/{season_number}/magnet")
         
         items = [
             MovieMagnetItem(
-                name=item["name"],
+                title=item["title"],
                 size=item["size"],
-                magnet=item["magnet"],
-                resolution=item["resolution"],
-                source=item["source"],
-                quality=item["quality"],
-                zh_sub=item["zh_sub"]
+                magnet=item["magnet"]
             )
             for item in data["magnet"]
         ]
         
         return TVSeasonMagnetResponse(
-            id=data["id"],
             season_number=data["season_number"],
             media_type=data["media_type"],
-            magnet=items
-        )
+            items=items
+        ) 

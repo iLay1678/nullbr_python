@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union, Optional
 from .base import MediaItem
 
 @dataclass
@@ -36,7 +36,7 @@ class MovieMagnetItem:
     magnet: str
     resolution: str
     source: str
-    quality: str | List[str]
+    quality: Union[str, List[str]]
     zh_sub: int
 
 @dataclass
@@ -51,8 +51,8 @@ class MovieEd2kItem:
     size: str
     ed2k: str
     resolution: str
-    source: str | None
-    quality: str | List[str]
+    source: Optional[str]
+    quality: Union[str, List[str]]
     zh_sub: int
 
 @dataclass

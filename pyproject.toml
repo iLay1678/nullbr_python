@@ -1,10 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "nullbr-python"
 version = "0.1.0"
-description = "nullbr python sdk"
+description = "Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK"
 readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "nullbr-python", email = "contact@example.com"},
+]
+maintainers = [
+    {name = "nullbr-python", email = "contact@example.com"},
+]
+keywords = ["nullbr", "api", "sdk", "movies", "tv", "tmdb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Video",
+]
 requires-python = ">=3.9"
 dependencies = [
-    "httpx[http2]>=0.28.1",
+    "httpx[http2,socks]>=0.28.1",
     "python-dotenv>=1.1.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "isort>=5.12.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/iLay1678/nullbr_python"
+Documentation = "https://github.com/iLay1678/nullbr_python/blob/main/README.md"
+Repository = "https://github.com/iLay1678/nullbr_python"
+"Bug Tracker" = "https://github.com/iLay1678/nullbr_python/issues"
+
+[project.scripts]
+nullbr = "nullbr_python.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nullbr_python"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
