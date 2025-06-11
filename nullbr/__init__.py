@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -194,10 +194,10 @@ class NullbrSDK:
             overview=data.get("overview"),
             vote=data.get("vote"),
             release_date=data.get("release_date"),
-            has_115=bool(data.get("115-flg")),
-            has_magnet=bool(data.get("magnet-flg")),
-            has_ed2k=bool(data.get("ed2k-flg")),
-            has_video=bool(data.get("video-flg")),
+            has_115=data.get("115-flg") == 1,
+            has_magnet=data.get("magnet-flg") == 1,
+            has_ed2k=data.get("ed2k-flg") == 1,
+            has_video=data.get("video-flg") == 1,
         )
 
     def get_movie_115(self, tmdbid: int, page: int = 1) -> Movie115Response:
@@ -336,7 +336,7 @@ class NullbrSDK:
             overview=data.get("overview"),
             vote=data.get("vote"),
             release_date=data.get("release_date"),
-            has_115=bool(data.get("115-flg", "false")),
+            has_115=data.get("115-flg") == 1,
             items=items,
         )
 
@@ -362,10 +362,10 @@ class NullbrSDK:
             vote=data.get("vote"),
             release_date=data.get("release_date"),
             number_of_seasons=data.get("number_of_seasons"),
-            has_115=bool(data.get("115-flg")),
-            has_magnet=bool(data.get("magnet-flg")),
-            has_ed2k=bool(data.get("ed2k-flg")),
-            has_video=bool(data.get("video-flg")),
+            has_115=data.get("115-flg") == 1,
+            has_magnet=data.get("magnet-flg") == 1,
+            has_ed2k=data.get("ed2k-flg") == 1,
+            has_video=data.get("video-flg") == 1,
         )
 
     def get_tv_115(self, tmdbid: int, page: int = 1) -> TV115Response:
