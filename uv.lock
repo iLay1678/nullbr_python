@@ -639,7 +639,7 @@ wheels = [
 
 [[package]]
 name = "nullbr-python"
-version = "0.1.1"
+version = "0.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2", "socks"] },

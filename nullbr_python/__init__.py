@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "nullbr-python"
 __license__ = "MIT"
 

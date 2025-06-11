@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nullbr-python"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK"
 readme = "README.md"
 license = {text = "MIT"}
