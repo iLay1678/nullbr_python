@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from typing import List
+
 from .base import MediaItem
 from .movie import Movie115Item
+
 
 @dataclass
 class CollectionResponse:
@@ -13,6 +15,7 @@ class CollectionResponse:
     release_date: str
     has_115: bool
     items: List[MediaItem]
+
 
 @dataclass
 class Collection115Response:

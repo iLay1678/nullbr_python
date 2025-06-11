@@ -1,12 +1,15 @@
 from dataclasses import dataclass
-from typing import List, Union, Optional
+from typing import List, Optional, Union
+
 from .base import MediaItem
+
 
 @dataclass
 class Movie115Item:
     title: str
     size: str
     share_link: str
+
 
 @dataclass
 class MovieResponse:
@@ -21,6 +24,7 @@ class MovieResponse:
     has_ed2k: bool
     has_video: bool
 
+
 @dataclass
 class Movie115Response:
     id: int
@@ -28,6 +32,7 @@ class Movie115Response:
     page: int
     total_page: int
     items: List[Movie115Item]
+
 
 @dataclass
 class MovieMagnetItem:
@@ -39,11 +44,13 @@ class MovieMagnetItem:
     quality: Union[str, List[str]]
     zh_sub: int
 
+
 @dataclass
 class MovieMagnetResponse:
     id: int
     media_type: str
     magnet: List[MovieMagnetItem]
+
 
 @dataclass
 class MovieEd2kItem:
@@ -54,6 +61,7 @@ class MovieEd2kItem:
     source: Optional[str]
     quality: Union[str, List[str]]
     zh_sub: int
+
 
 @dataclass
 class MovieEd2kResponse:

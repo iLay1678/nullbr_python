@@ -17,6 +17,12 @@ Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK
 
 ## 安装
 
+### 使用 uv 安装
+
+```bash
+uv add nullbr-python
+```
+
 ### 使用 pip 安装
 
 ```bash
@@ -27,8 +33,9 @@ pip install nullbr-python
 
 ```bash
 git clone https://github.com/iLay1678/nullbr_python.git
-cd nullbr-python
-pip install -e .
+cd nullbr_python
+uv sync
+uv pip install -e .
 ```
 
 ## 快速开始
@@ -146,26 +153,26 @@ sdk = NullbrSDK(
 ### 安装开发依赖
 
 ```bash
+uv sync --dev
+```
+
+或者使用pip：
+
+```bash
 pip install -e ".[dev]"
 ```
 
 ### 代码格式化
 
 ```bash
-black nullbr_python/
-isort nullbr_python/
-```
-
-### 类型检查
-
-```bash
-mypy nullbr_python/
+uv run black nullbr_python/
+uv run isort nullbr_python/
 ```
 
 ### 运行测试
 
 ```bash
-pytest
+uv run pytest
 ```
 
 ## 许可证
@@ -178,7 +185,7 @@ pytest
 
 ## 更新日志
 
-### 0.1.0
+### 0.1.1
 - 初始版本
 - 支持基本的搜索和获取媒体信息功能
 - 命令行工具支持

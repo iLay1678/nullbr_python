@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
+
 @dataclass
-class MediaItem :
+class MediaItem:
     media_type: str
     tmdbid: int
     poster: str

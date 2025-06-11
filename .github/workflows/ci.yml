@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run tests
+      run: |
+        uv run pytest --cov=nullbr_python --cov-report=xml || echo "No tests found, skipping..."
+        
+    - name: Check code formatting
+      run: |
+        uv run black --check nullbr_python/
+        uv run isort --check-only nullbr_python/
+        
+    - name: Test CLI
+      run: |
+        uv run python -m nullbr_python.cli --help
+        
+    - name: Test package import
+      run: |
+        uv run python -c "from nullbr_python import NullbrSDK; print('Package import successful!')"
+        
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false 

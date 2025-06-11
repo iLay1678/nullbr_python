@@ -5,25 +5,25 @@ This module contains all the data models used by the nullbr-python SDK.
 """
 
 from .base import MediaItem
-from .search import SearchResponse, ListResponse
+from .collection import (
+    Collection115Response,
+    CollectionResponse,
+)
 from .movie import (
     Movie115Item,
-    MovieResponse,
     Movie115Response,
-    MovieMagnetItem,
-    MovieMagnetResponse,
     MovieEd2kItem,
     MovieEd2kResponse,
+    MovieMagnetItem,
+    MovieMagnetResponse,
+    MovieResponse,
 )
+from .search import ListResponse, SearchResponse
 from .tv import (
-    TVResponse,
     TV115Response,
-    TVSeasonResponse,
+    TVResponse,
     TVSeasonMagnetResponse,
-)
-from .collection import (
-    CollectionResponse,
-    Collection115Response,
+    TVSeasonResponse,
 )
 
 __all__ = [
@@ -43,4 +43,4 @@ __all__ = [
     "TVSeasonMagnetResponse",
     "CollectionResponse",
     "Collection115Response",
-] 
+]

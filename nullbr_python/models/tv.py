@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from typing import List
+
 from .base import MediaItem
 from .movie import Movie115Item, MovieMagnetItem
+
 
 @dataclass
 class TVResponse:
@@ -17,6 +19,7 @@ class TVResponse:
     has_ed2k: bool
     has_video: bool
 
+
 @dataclass
 class TV115Response:
     id: int
@@ -24,6 +27,7 @@ class TV115Response:
     page: int
     total_page: int
     items: List[Movie115Item]
+
 
 @dataclass
 class TVSeasonResponse:
@@ -36,6 +40,7 @@ class TVSeasonResponse:
     episode_count: int
     vote_average: float
     has_magnet: bool
+
 
 @dataclass
 class TVSeasonMagnetResponse:

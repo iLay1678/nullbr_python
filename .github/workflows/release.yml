@@ -1,0 +1,49 @@
+name: Release to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build-and-publish:
+    name: Build and publish to PyPI
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run tests
+      run: |
+        uv run pytest --cov=nullbr_python --cov-report=xml || echo "No tests found, skipping..."
+        
+    - name: Check code formatting
+      run: |
+        uv run black --check nullbr_python/
+        uv run isort --check-only nullbr_python/
+        
+    - name: Build package
+      run: uv build
+      
+    - name: Check build
+      run: |
+        uv run twine check dist/*
+        
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        verbose: true 

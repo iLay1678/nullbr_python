@@ -15,7 +15,7 @@ from . import NullbrSDK
 
 def to_dict(obj):
     """将数据类对象递归转换为字典，以便JSON序列化"""
-    if hasattr(obj, '__dataclass_fields__'):
+    if hasattr(obj, "__dataclass_fields__"):
         # 这是一个数据类对象
         return asdict(obj)
     elif isinstance(obj, list):
@@ -35,39 +35,34 @@ def create_parser() -> argparse.ArgumentParser:
         description="nullbr-python: Python SDK for Nullbr API",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
+    parser.add_argument("--app-id", required=True, help="Nullbr API App ID")
+
     parser.add_argument(
-        "--app-id",
-        required=True,
-        help="Nullbr API App ID"
+        "--api-key", help="Nullbr API Key (optional, required for some operations)"
     )
-    
-    parser.add_argument(
-        "--api-key", 
-        help="Nullbr API Key (optional, required for some operations)"
-    )
-    
+
     parser.add_argument(
         "--base-url",
         default="https://api.nullbr.eu.org",
-        help="API base URL (default: https://api.nullbr.eu.org)"
+        help="API base URL (default: https://api.nullbr.eu.org)",
     )
-    
+
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    
+
     # Search command
     search_parser = subparsers.add_parser("search", help="Search for media")
     search_parser.add_argument("query", help="Search query")
     search_parser.add_argument("--page", type=int, default=1, help="Page number")
-    
+
     # Movie command
     movie_parser = subparsers.add_parser("movie", help="Get movie information")
     movie_parser.add_argument("tmdbid", type=int, help="TMDB ID")
-    
-    # TV command  
+
+    # TV command
     tv_parser = subparsers.add_parser("tv", help="Get TV show information")
     tv_parser.add_argument("tmdbid", type=int, help="TMDB ID")
-    
+
     return parser
 
 
@@ -75,18 +70,14 @@ def main():
     """主入口函数"""
     parser = create_parser()
     args = parser.parse_args()
-    
+
     if not args.command:
         parser.print_help()
         sys.exit(1)
-    
+
     # 创建SDK实例
-    sdk = NullbrSDK(
-        app_id=args.app_id,
-        api_key=args.api_key,
-        base_url=args.base_url
-    )
-    
+    sdk = NullbrSDK(app_id=args.app_id, api_key=args.api_key, base_url=args.base_url)
+
     try:
         if args.command == "search":
             result = sdk.search(args.query, args.page)
@@ -97,15 +88,15 @@ def main():
         else:
             print(f"Unknown command: {args.command}")
             sys.exit(1)
-        
+
         # 输出结果
         result_dict = to_dict(result)
         print(json.dumps(result_dict, indent=2, ensure_ascii=False))
-        
+
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    main() 
+    main()
