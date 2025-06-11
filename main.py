@@ -1,7 +1,7 @@
 from nullbr import NullbrSDK
 
 def main():
-    print("Hello from nullbr-python!")
+    print("Hello from nullbr!")
     print("This is a Python SDK for Nullbr API")
     print("使用示例:")
     print("from nullbr import NullbrSDK")

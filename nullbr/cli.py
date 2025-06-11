@@ -1,7 +1,7 @@
 """
-Command Line Interface for nullbr-python
+Command Line Interface for nullbr
 
-This module provides a simple CLI for the nullbr-python SDK.
+This module provides a simple CLI for the nullbr SDK.
 """
 
 import argparse
@@ -32,7 +32,7 @@ def to_dict(obj):
 def create_parser() -> argparse.ArgumentParser:
     """创建命令行参数解析器"""
     parser = argparse.ArgumentParser(
-        description="nullbr-python: Python SDK for Nullbr API",
+        description="nullbr: Python SDK for Nullbr API",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 

@@ -1,4 +1,4 @@
-# nullbr-python
+# nullbr
 
 ![PyPI - Version](https://img.shields.io/pypi/v/nullbr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

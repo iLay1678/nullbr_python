@@ -1,7 +1,7 @@
 """
-Models for nullbr-python SDK
+Models for nullbr SDK
 
-This module contains all the data models used by the nullbr-python SDK.
+This module contains all the data models used by the nullbr SDK.
 """
 
 from .base import MediaItem

@@ -1,12 +1,12 @@
 """
-nullbr-python: Python SDK for Nullbr API
+nullbr: Python SDK for Nullbr API
 
 A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
 __version__ = "1.0.0"
-__author__ = "nullbr-python"
+__author__ = "nullbr"
 __license__ = "MIT"
 
 import httpx

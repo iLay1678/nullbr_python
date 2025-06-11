@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-nullbr-python 基本使用示例
+nullbr 基本使用示例
 
-这个示例展示了如何使用 nullbr-python SDK 进行基本操作。
+这个示例展示了如何使用 nullbr SDK 进行基本操作。
 """
 
 import os
@@ -17,7 +17,7 @@ def main():
     # 初始化SDK
     sdk = NullbrSDK(app_id=app_id, api_key=api_key)
     
-    print("=== nullbr-python SDK 基本使用示例 ===\n")
+    print("=== nullbr SDK 基本使用示例 ===\n")
     
     # 1. 搜索示例
     print("1. 搜索电影...")
