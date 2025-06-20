@@ -176,11 +176,17 @@ uv sync --dev
 pip install -e ".[dev]"
 ```
 
-### 代码格式化
+### 代码格式化和检查
 
 ```bash
-uv run black nullbr/
-uv run isort nullbr/
+# 格式化代码
+uv run ruff format nullbr/
+
+# 检查和修复代码
+uv run ruff check --fix nullbr/
+
+# 仅检查代码（不修复）
+uv run ruff check nullbr/
 ```
 
 ### 运行测试

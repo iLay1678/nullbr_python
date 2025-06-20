@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from .base import MediaItem
 from .movie import Movie115Item
@@ -14,7 +13,7 @@ class CollectionResponse:
     vote: str
     release_date: str
     has_115: bool
-    items: List[MediaItem]
+    items: list[MediaItem]
 
 
 @dataclass
@@ -23,4 +22,4 @@ class Collection115Response:
     media_type: str
     page: int
     total_page: int
-    items: List[Movie115Item]
+    items: list[Movie115Item]

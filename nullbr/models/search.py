@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from .base import MediaItem
 
@@ -9,7 +8,7 @@ class SearchResponse:
     page: int
     total_pages: int
     total_results: int
-    items: List[MediaItem]
+    items: list[MediaItem]
 
 
 @dataclass
@@ -20,4 +19,4 @@ class ListResponse:
     updated_dt: str
     page: int
     total_page: int
-    items: List[MediaItem]
+    items: list[MediaItem]

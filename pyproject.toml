@@ -39,8 +39,7 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
-    "black>=23.0.0",
-    "isort>=5.12.0",
+    "ruff>=0.8.0",
     "twine>=4.0.0",
 ]
 
@@ -56,12 +55,31 @@ nullbr = "nullbr.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["nullbr"]
 
-[tool.black]
+[tool.ruff]
+# 目标 Python 版本
+target-version = "py39"
+# 行长度
 line-length = 88
-target-version = ['py39']
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
+[tool.ruff.lint]
+# 启用的规则
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+# 忽略的规则
+ignore = [
+    "E501",  # line too long, handled by black
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0",
+]
 
 

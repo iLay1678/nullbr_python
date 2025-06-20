@@ -8,7 +8,6 @@ import argparse
 import json
 import sys
 from dataclasses import asdict
-from typing import Optional
 
 from . import NullbrSDK
 

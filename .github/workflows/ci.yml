@@ -34,10 +34,10 @@ jobs:
       run: |
         uv run pytest --cov=nullbr --cov-report=xml || echo "No tests found, skipping..."
         
-    - name: Check code formatting
+    - name: Check code formatting and linting
       run: |
-        uv run black --check nullbr/
-        uv run isort --check-only nullbr/
+        uv run ruff check nullbr/
+        uv run ruff format --check nullbr/
         
     - name: Test CLI
       run: |

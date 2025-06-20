@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-from typing import List
 
-from .base import MediaItem
 from .movie import Movie115Item, MovieMagnetItem
 
 
@@ -26,7 +24,7 @@ class TV115Response:
     media_type: str
     page: int
     total_page: int
-    items: List[Movie115Item]
+    items: list[Movie115Item]
 
 
 @dataclass
@@ -47,4 +45,4 @@ class TVSeasonMagnetResponse:
     id: int
     season_number: int
     media_type: str
-    magnet: List[MovieMagnetItem]
+    magnet: list[MovieMagnetItem]
