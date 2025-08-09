@@ -610,7 +610,8 @@ class NullbrSDK:
             raise ValueError("API KEY is required for this operation")
 
         data = self._request(
-            "GET", f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}/video"
+            "GET",
+            f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}/video",
         )
 
         items = [

@@ -77,11 +77,15 @@ def create_parser() -> argparse.ArgumentParser:
     tv_ed2k_parser.add_argument("episode", type=int, help="Episode number")
 
     # Movie video command
-    movie_video_parser = subparsers.add_parser("movie-video", help="Get movie video resources (m3u8/http)")
+    movie_video_parser = subparsers.add_parser(
+        "movie-video", help="Get movie video resources (m3u8/http)"
+    )
     movie_video_parser.add_argument("tmdbid", type=int, help="TMDB ID")
 
     # TV episode video command
-    tv_video_parser = subparsers.add_parser("tv-episode-video", help="Get TV episode video resources (m3u8/http)")
+    tv_video_parser = subparsers.add_parser(
+        "tv-episode-video", help="Get TV episode video resources (m3u8/http)"
+    )
     tv_video_parser.add_argument("tmdbid", type=int, help="TMDB ID")
     tv_video_parser.add_argument("season", type=int, help="Season number")
     tv_video_parser.add_argument("episode", type=int, help="Episode number")
