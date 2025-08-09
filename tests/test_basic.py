@@ -45,8 +45,8 @@ def test_media_item_creation():
         vote_average=8.5,
         release_date="2024-01-01"
     )
-    
+
     assert item.media_type == "movie"
     assert item.tmdbid == 12345
     assert item.title == "Test Movie"
-    assert item.vote_average == 8.5 
+    assert item.vote_average == 8.5

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .movie import Movie115Item, MovieMagnetItem
+from .movie import Movie115Item, MovieEd2kItem, MovieMagnetItem, MovieVideoItem
 
 
 @dataclass
@@ -46,3 +46,21 @@ class TVSeasonMagnetResponse:
     season_number: int
     media_type: str
     magnet: list[MovieMagnetItem]
+
+
+@dataclass
+class TVEpisodeEd2kResponse:
+    tv_show_id: int
+    season_number: int
+    episode_number: int
+    media_type: str
+    ed2k: list[MovieEd2kItem]
+
+
+@dataclass
+class TVEpisodeVideoResponse:
+    tv_show_id: int
+    season_number: int
+    episode_number: int
+    media_type: str
+    video: list[MovieVideoItem]

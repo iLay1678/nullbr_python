@@ -552,7 +552,7 @@ wheels = [
 
 [[package]]
 name = "nullbr"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2", "socks"] },

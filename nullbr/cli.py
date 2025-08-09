@@ -62,6 +62,30 @@ def create_parser() -> argparse.ArgumentParser:
     tv_parser = subparsers.add_parser("tv", help="Get TV show information")
     tv_parser.add_argument("tmdbid", type=int, help="TMDB ID")
 
+    # Movie ed2k command
+    movie_ed2k_parser = subparsers.add_parser(
+        "movie-ed2k", help="Get movie ed2k resources"
+    )
+    movie_ed2k_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+
+    # TV episode ed2k command
+    tv_ed2k_parser = subparsers.add_parser(
+        "tv-episode-ed2k", help="Get TV episode ed2k resources"
+    )
+    tv_ed2k_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+    tv_ed2k_parser.add_argument("season", type=int, help="Season number")
+    tv_ed2k_parser.add_argument("episode", type=int, help="Episode number")
+
+    # Movie video command
+    movie_video_parser = subparsers.add_parser("movie-video", help="Get movie video resources (m3u8/http)")
+    movie_video_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+
+    # TV episode video command
+    tv_video_parser = subparsers.add_parser("tv-episode-video", help="Get TV episode video resources (m3u8/http)")
+    tv_video_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+    tv_video_parser.add_argument("season", type=int, help="Season number")
+    tv_video_parser.add_argument("episode", type=int, help="Episode number")
+
     return parser
 
 
@@ -84,6 +108,14 @@ def main():
             result = sdk.get_movie(args.tmdbid)
         elif args.command == "tv":
             result = sdk.get_tv(args.tmdbid)
+        elif args.command == "movie-ed2k":
+            result = sdk.get_movie_ed2k(args.tmdbid)
+        elif args.command == "tv-episode-ed2k":
+            result = sdk.get_tv_episode_ed2k(args.tmdbid, args.season, args.episode)
+        elif args.command == "movie-video":
+            result = sdk.get_movie_video(args.tmdbid)
+        elif args.command == "tv-episode-video":
+            result = sdk.get_tv_episode_video(args.tmdbid, args.season, args.episode)
         else:
             print(f"Unknown command: {args.command}")
             sys.exit(1)

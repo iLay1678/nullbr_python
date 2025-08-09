@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.3"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -21,10 +21,14 @@ from .models.movie import (
     MovieMagnetItem,
     MovieMagnetResponse,
     MovieResponse,
+    MovieVideoItem,
+    MovieVideoResponse,
 )
 from .models.search import ListResponse, SearchResponse
 from .models.tv import (
     TV115Response,
+    TVEpisodeEd2kResponse,
+    TVEpisodeVideoResponse,
     TVResponse,
     TVSeasonMagnetResponse,
     TVSeasonResponse,
@@ -40,10 +44,13 @@ __all__ = [
     "Movie115Response",
     "MovieMagnetResponse",
     "MovieEd2kResponse",
+    "MovieVideoResponse",
     "TVResponse",
     "TV115Response",
     "TVSeasonResponse",
     "TVSeasonMagnetResponse",
+    "TVEpisodeEd2kResponse",
+    "TVEpisodeVideoResponse",
     "CollectionResponse",
     "Collection115Response",
 ]
@@ -506,4 +513,119 @@ class NullbrSDK:
             season_number=data.get("season_number"),
             media_type=data.get("media_type"),
             magnet=items,
+        )
+
+    def get_tv_episode_ed2k(
+        self, tmdbid: int, season_number: int, episode_number: int
+    ) -> TVEpisodeEd2kResponse:
+        """获取剧集单集ed2k资源
+
+        Args:
+            tmdbid: 剧集的TMDB ID
+            season_number: 季数
+            episode_number: 集数
+
+        Returns:
+            TVEpisodeEd2kResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        data = self._request(
+            "GET",
+            f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}/ed2k",
+        )
+
+        items = [
+            MovieEd2kItem(
+                name=item.get("name"),
+                size=item.get("size"),
+                ed2k=item.get("ed2k"),
+                resolution=item.get("resolution"),
+                source=item.get("source"),
+                quality=item.get("quality"),
+                zh_sub=item.get("zh_sub"),
+            )
+            for item in data.get("ed2k", [])
+        ]
+
+        return TVEpisodeEd2kResponse(
+            tv_show_id=data.get("tv_show_id"),
+            season_number=data.get("season_number"),
+            episode_number=data.get("episode_number"),
+            media_type=data.get("media_type"),
+            ed2k=items,
+        )
+
+    def get_movie_video(self, tmdbid: int) -> MovieVideoResponse:
+        """获取电影video资源（m3u8/http）
+
+        Args:
+            tmdbid: 电影的TMDB ID
+
+        Returns:
+            MovieVideoResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+
+        data = self._request("GET", f"{self.base_url}/movie/{tmdbid}/video")
+
+        items = [
+            MovieVideoItem(
+                name=item.get("name"),
+                type=item.get("type"),
+                link=item.get("link"),
+            )
+            for item in data.get("video", [])
+        ]
+
+        return MovieVideoResponse(
+            id=data.get("id"), media_type=data.get("media_type"), video=items
+        )
+
+    def get_tv_episode_video(
+        self, tmdbid: int, season_number: int, episode_number: int
+    ) -> TVEpisodeVideoResponse:
+        """获取剧集单集video资源（m3u8/http）
+
+        Args:
+            tmdbid: 剧集的TMDB ID
+            season_number: 季数
+            episode_number: 集数
+
+        Returns:
+            TVEpisodeVideoResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+
+        data = self._request(
+            "GET", f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}/video"
+        )
+
+        items = [
+            MovieVideoItem(
+                name=item.get("name"),
+                type=item.get("type"),
+                link=item.get("link"),
+            )
+            for item in data.get("video", [])
+        ]
+
+        return TVEpisodeVideoResponse(
+            tv_show_id=data.get("tv_show_id"),
+            season_number=data.get("season_number"),
+            episode_number=data.get("episode_number"),
+            media_type=data.get("media_type"),
+            video=items,
         )

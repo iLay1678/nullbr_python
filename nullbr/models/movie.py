@@ -66,3 +66,17 @@ class MovieEd2kResponse:
     id: int
     media_type: str
     ed2k: list[MovieEd2kItem]
+
+
+@dataclass
+class MovieVideoItem:
+    name: str
+    type: str  # "m3u8" or "http"
+    link: str
+
+
+@dataclass
+class MovieVideoResponse:
+    id: int
+    media_type: str
+    video: list[MovieVideoItem]

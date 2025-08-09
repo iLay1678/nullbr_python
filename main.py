@@ -1,4 +1,3 @@
-from nullbr import NullbrSDK
 
 def main():
     print("Hello from nullbr!")
