@@ -14,6 +14,7 @@ Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK
 - 📚 获取合集信息和资源链接
 - 🎯 支持剧集季度和单集资源获取
 - 🛠️ 完整的命令行工具支持
+- 🔄 内置HTTP重试机制，提高请求可靠性
 - 🔒 MIT 许可证
 
 ## 安装
@@ -152,9 +153,18 @@ uv run python -m nullbr --app-id YOUR_APP_ID search "复仇者联盟"
 sdk = NullbrSDK(
     app_id="your_app_id",        # 必需：您的APP ID
     api_key="your_api_key",      # 可选：某些资源操作需要
-    base_url="https://api.nullbr.eu.org"  # 默认API地址
+    base_url="https://api.nullbr.eu.org",  # 默认API地址
+    max_retries=3,               # 可选：最大重试次数，默认3次
+    backoff_factor=1.0           # 可选：退避因子，默认1.0秒
 )
 ```
+
+**内置重试机制：**
+- 自动重试失败的HTTP请求，默认最多重试3次（可配置）
+- 针对临时错误状态码：429（请求过频）、500/502/503/504（服务器错误）、408（请求超时）
+- 指数退避策略，重试间隔逐渐增加（backoff_factor * 2^attempt）
+- 适用于所有HTTP方法，包括GET、POST等
+- 网络错误和临时服务器错误都会自动重试
 
 #### 搜索功能
 
@@ -846,6 +856,10 @@ uv build
 5. 开启 Pull Request
 
 ## 更新日志
+
+### v1.0.4
+
+- ✅ 添加HTTP重试机制，提高请求稳定性和可靠性
 
 ### v1.0.3
 

@@ -5,9 +5,11 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 __author__ = "nullbr"
 __license__ = "MIT"
+
+import time
 
 import httpx
 
@@ -62,10 +64,18 @@ class NullbrSDK:
         app_id: str,
         api_key: str = None,
         base_url: str = "https://api.nullbr.eu.org",
+        max_retries: int = 3,
+        backoff_factor: float = 1.0,
     ):
         self.app_id = app_id
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
+        self.max_retries = max_retries
+        self.backoff_factor = backoff_factor
+
+        # 重试的HTTP状态码
+        self.retry_status_codes = {429, 500, 502, 503, 504, 408}
+
         self.session = httpx.Client()
         self.session.headers.update({"X-APP-ID": app_id})
         if api_key:
@@ -73,7 +83,7 @@ class NullbrSDK:
 
     def _request(self, method: str, url: str, params: dict = None) -> dict:
         """
-        统一的API请求方法，包含日志记录
+        统一的API请求方法，包含重试机制和日志记录
 
         Args:
             method: HTTP方法 (GET/POST等)
@@ -90,19 +100,58 @@ class NullbrSDK:
 
         logger = logging.getLogger(__name__)
 
-        logger.info(f"Requesting {method} {url}")
-        if params is not None:
-            logger.debug(f"Request params: {params}")
+        last_exception = None
 
-        response = self.session.request(method, url, params=params)
-        if not response.is_success:
-            logger.error(f"API returned {response.status_code}")
-            logger.error(f"Response data: {response.json()}")
-            response.raise_for_status()
-        logger.info(f"Response status: {response.status_code}")
-        logger.debug(f"Response data: {response.json()}")
+        for attempt in range(self.max_retries + 1):
+            try:
+                logger.info(f"Requesting {method} {url} (attempt {attempt + 1})")
+                if params is not None:
+                    logger.debug(f"Request params: {params}")
 
-        return response.json()
+                response = self.session.request(method, url, params=params)
+
+                if response.is_success:
+                    logger.info(f"Response status: {response.status_code}")
+                    logger.debug(f"Response data: {response.json()}")
+                    return response.json()
+
+                # 检查是否是可重试的状态码
+                if response.status_code in self.retry_status_codes:
+                    if attempt < self.max_retries:
+                        wait_time = self.backoff_factor * (2 ** attempt)
+                        logger.warning(
+                            f"API returned {response.status_code}, retrying in {wait_time:.1f}s "
+                            f"(attempt {attempt + 1}/{self.max_retries + 1})"
+                        )
+                        time.sleep(wait_time)
+                        continue
+
+                # 不是可重试状态码或者重试次数用完，直接抛出异常
+                logger.error(f"API returned {response.status_code}")
+                try:
+                    error_data = response.json()
+                    logger.error(f"Response data: {error_data}")
+                except Exception:
+                    logger.error(f"Response text: {response.text}")
+                response.raise_for_status()
+
+            except httpx.RequestError as e:
+                last_exception = e
+                if attempt < self.max_retries:
+                    wait_time = self.backoff_factor * (2 ** attempt)
+                    logger.warning(
+                        f"Request failed: {e}, retrying in {wait_time:.1f}s "
+                        f"(attempt {attempt + 1}/{self.max_retries + 1})"
+                    )
+                    time.sleep(wait_time)
+                    continue
+                else:
+                    logger.error(f"Request failed after {self.max_retries + 1} attempts: {e}")
+                    raise
+
+        # 如果所有重试都失败了，抛出最后的异常
+        if last_exception:
+            raise last_exception
 
     def search(self, query: str, page: int = 1) -> SearchResponse:
         """搜索合集、电影、剧集、人物
