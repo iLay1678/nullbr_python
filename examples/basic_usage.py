@@ -97,7 +97,7 @@ def main():
                 print(f"     分辨率: {resource.resolution}")
                 print(f"     中文字幕: {'是' if resource.zh_sub else '否'}")
                 print()
-                
+
             # 获取电影video资源
             print("7. 获取电影video资源...")
             video_resources = sdk.get_movie_video(78)  # 银翼杀手
@@ -105,9 +105,10 @@ def main():
             for i, resource in enumerate(video_resources.video[:3], 1):
                 print(f"  {i}. {resource.name}")
                 print(f"     类型: {resource.type}")
+                print(f"     来源: {resource.source}")
                 print(f"     链接: {resource.link[:50]}...")
                 print()
-                
+
             # 获取剧集单集video资源
             print("8. 获取剧集单集video资源...")
             tv_video_resources = sdk.get_tv_episode_video(1396, 3, 4)  # 绝命毒师 S03E04
@@ -115,6 +116,7 @@ def main():
             for i, resource in enumerate(tv_video_resources.video[:2], 1):
                 print(f"  {i}. {resource.name}")
                 print(f"     类型: {resource.type}")
+                print(f"     来源: {resource.source}")
                 print(f"     链接: {resource.link[:50]}...")
                 print()
         except Exception as e:

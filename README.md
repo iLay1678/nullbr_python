@@ -254,7 +254,10 @@ sdk = NullbrSDK(
         {
             "title": "复仇者联盟4：终局之战 (2019)",
             "size": "4.2 GB",
-            "share_link": "https://115.com/s/sw1a2b3c4d5"
+            "share_link": "https://115.com/s/sw1a2b3c4d5",
+            "resolution": "1080p",
+            "quality": ["BluRay", "x264"],
+            "season_list": null
         }
     ]
 }
@@ -335,17 +338,20 @@ sdk = NullbrSDK(
         {
             "name": "1",
             "type": "m3u8",
-            "link": "https://m3u8.heimuertv.com/play/82d683b472b04e0292b41d05a739f4e1.m3u8"
+            "link": "https://m3u8.heimuertv.com/play/82d683b472b04e0292b41d05a739f4e1.m3u8",
+            "source": "HD"
         },
         {
             "name": "HD中字",
             "type": "http",
-            "link": "https://dow7.lzidw.com/20221016/17423_a0c8e991/银翼杀手.Blade.Runner.1982.国语.mp4"
+            "link": "https://dow7.lzidw.com/20221016/17423_a0c8e991/银翼杀手.Blade.Runner.1982.国语.mp4",
+            "source": "WebRip"
         },
         {
             "name": "HD中字",
             "type": "m3u8",
-            "link": "https://vip1.lz-cdn1.com/20221016/17423_a0c8e991/index.m3u8"
+            "link": "https://vip1.lz-cdn1.com/20221016/17423_a0c8e991/index.m3u8",
+            "source": "HD"
         }
     ]
 }
@@ -479,17 +485,20 @@ sdk = NullbrSDK(
         {
             "type": "m3u8",
             "name": "4",
-            "link": "https://m3u8.heimuertv.com/play/e8146ae6dbb14a22a00c841cd3c016b2.m3u8"
+            "link": "https://m3u8.heimuertv.com/play/e8146ae6dbb14a22a00c841cd3c016b2.m3u8",
+            "source": "HD"
         },
         {
             "type": "http",
             "name": "第04集",
-            "link": "https://dow4.lzidw.com/20220521/13365_133713b3/绝命毒师S0304.mp4"
+            "link": "https://dow4.lzidw.com/20220521/13365_133713b3/绝命毒师S0304.mp4",
+            "source": "WebRip"
         },
         {
             "type": "m3u8",
             "name": "第04集",
-            "link": "https://vip.lz-cdn4.com/20220521/13365_133713b3/index.m3u8"
+            "link": "https://vip.lz-cdn4.com/20220521/13365_133713b3/index.m3u8",
+            "source": "HD"
         }
     ]
 }
@@ -674,9 +683,12 @@ python -m nullbr --app-id YOUR_APP_ID search "复仇者联盟" | jq '.items[0].t
 115网盘资源项目
 ```python
 {
-    "title": str,          # 资源标题
-    "size": str,           # 文件大小
-    "share_link": str      # 分享链接
+    "title": str,               # 资源标题
+    "size": str,                # 文件大小
+    "share_link": str,          # 分享链接
+    "resolution": str | null,   # 分辨率（新增）
+    "quality": str | [str] | null, # 质量标签（新增）
+    "season_list": [str] | null # 季度列表（新增，仅TV资源）
 }
 ```
 
@@ -714,7 +726,8 @@ video资源项目
 {
     "name": str,                    # 资源名称
     "type": str,                    # 资源类型（"m3u8" 或 "http"）
-    "link": str                     # 资源链接
+    "link": str,                    # 资源链接
+    "source": str | null            # 资源来源（新增）
 }
 ```
 
@@ -773,6 +786,7 @@ def main():
     for resource in movie_video.video[:3]:
         print(f"名称: {resource.name}")
         print(f"类型: {resource.type}")
+        print(f"来源: {resource.source}")
         print(f"链接: {resource.link[:50]}...")
         print()
     
@@ -783,6 +797,7 @@ def main():
         print(f"剧集: 第{tv_video.season_number}季第{tv_video.episode_number}集")
         print(f"名称: {resource.name}")
         print(f"类型: {resource.type}")
+        print(f"来源: {resource.source}")
         print(f"链接: {resource.link[:50]}...")
         print()
 
@@ -856,6 +871,16 @@ uv build
 5. 开启 Pull Request
 
 ## 更新日志
+
+### v1.0.5
+
+- ✅ **API 同步更新**：同步上游API更新内容
+  - 🎬 video资源接口新增 `source` 字段，标识资源来源（HD、WebRip等）
+  - 💾 115网盘资源接口新增 `resolution`、`quality`、`season_list` 字段
+  - 📚 增强资源信息展示，提供更详细的资源质量信息
+- ✅ 更新数据模型以支持新字段
+- ✅ 完善API文档和示例代码
+- ✅ 向后兼容，新字段均为可选参数
 
 ### v1.0.4
 

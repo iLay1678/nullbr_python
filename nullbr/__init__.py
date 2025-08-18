@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -118,7 +118,7 @@ class NullbrSDK:
                 # 检查是否是可重试的状态码
                 if response.status_code in self.retry_status_codes:
                     if attempt < self.max_retries:
-                        wait_time = self.backoff_factor * (2 ** attempt)
+                        wait_time = self.backoff_factor * (2**attempt)
                         logger.warning(
                             f"API returned {response.status_code}, retrying in {wait_time:.1f}s "
                             f"(attempt {attempt + 1}/{self.max_retries + 1})"
@@ -138,7 +138,7 @@ class NullbrSDK:
             except httpx.RequestError as e:
                 last_exception = e
                 if attempt < self.max_retries:
-                    wait_time = self.backoff_factor * (2 ** attempt)
+                    wait_time = self.backoff_factor * (2**attempt)
                     logger.warning(
                         f"Request failed: {e}, retrying in {wait_time:.1f}s "
                         f"(attempt {attempt + 1}/{self.max_retries + 1})"
@@ -146,7 +146,9 @@ class NullbrSDK:
                     time.sleep(wait_time)
                     continue
                 else:
-                    logger.error(f"Request failed after {self.max_retries + 1} attempts: {e}")
+                    logger.error(
+                        f"Request failed after {self.max_retries + 1} attempts: {e}"
+                    )
                     raise
 
         # 如果所有重试都失败了，抛出最后的异常
@@ -282,6 +284,9 @@ class NullbrSDK:
                 title=item.get("title"),
                 size=item.get("size"),
                 share_link=item.get("share_link"),
+                resolution=item.get("resolution"),
+                quality=item.get("quality"),
+                season_list=item.get("season_list"),
             )
             for item in data.get("115", [])
         ]
@@ -448,6 +453,9 @@ class NullbrSDK:
                 title=item.get("title"),
                 size=item.get("size"),
                 share_link=item.get("share_link"),
+                resolution=item.get("resolution"),
+                quality=item.get("quality"),
+                season_list=item.get("season_list"),
             )
             for item in data.get("115", [])
         ]
@@ -483,6 +491,9 @@ class NullbrSDK:
                 title=item.get("title"),
                 size=item.get("size"),
                 share_link=item.get("share_link"),
+                resolution=item.get("resolution"),
+                quality=item.get("quality"),
+                season_list=item.get("season_list"),
             )
             for item in data.get("115", [])
         ]
@@ -630,6 +641,7 @@ class NullbrSDK:
                 name=item.get("name"),
                 type=item.get("type"),
                 link=item.get("link"),
+                source=item.get("source"),
             )
             for item in data.get("video", [])
         ]
@@ -668,6 +680,7 @@ class NullbrSDK:
                 name=item.get("name"),
                 type=item.get("type"),
                 link=item.get("link"),
+                source=item.get("source"),
             )
             for item in data.get("video", [])
         ]

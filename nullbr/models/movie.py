@@ -7,6 +7,9 @@ class Movie115Item:
     title: str
     size: str
     share_link: str
+    resolution: Optional[str] = None
+    quality: Optional[Union[str, list[str]]] = None
+    season_list: Optional[list[str]] = None
 
 
 @dataclass
@@ -73,6 +76,7 @@ class MovieVideoItem:
     name: str
     type: str  # "m3u8" or "http"
     link: str
+    source: Optional[str] = None
 
 
 @dataclass
