@@ -58,6 +58,31 @@ class TVEpisodeEd2kResponse:
 
 
 @dataclass
+class TVEpisodeResponse:
+    tv_show_id: int
+    season_number: int
+    episode_number: int
+    episode_type: str
+    name: str
+    overview: str
+    air_date: str
+    vote_average: float
+    poseter: str
+    runtime: int
+    has_magnet: bool
+    has_ed2k: bool
+
+
+@dataclass
+class TVEpisodeMagnetResponse:
+    tv_show_id: int
+    season_number: int
+    episode_number: int
+    media_type: str
+    magnet: list[MovieMagnetItem]
+
+
+@dataclass
 class TVEpisodeVideoResponse:
     tv_show_id: int
     season_number: int

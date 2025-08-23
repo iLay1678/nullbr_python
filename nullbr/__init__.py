@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -30,6 +30,8 @@ from .models.search import ListResponse, SearchResponse
 from .models.tv import (
     TV115Response,
     TVEpisodeEd2kResponse,
+    TVEpisodeMagnetResponse,
+    TVEpisodeResponse,
     TVEpisodeVideoResponse,
     TVResponse,
     TVSeasonMagnetResponse,
@@ -51,6 +53,8 @@ __all__ = [
     "TV115Response",
     "TVSeasonResponse",
     "TVSeasonMagnetResponse",
+    "TVEpisodeResponse",
+    "TVEpisodeMagnetResponse",
     "TVEpisodeEd2kResponse",
     "TVEpisodeVideoResponse",
     "CollectionResponse",
@@ -691,4 +695,86 @@ class NullbrSDK:
             episode_number=data.get("episode_number"),
             media_type=data.get("media_type"),
             video=items,
+        )
+
+    def get_tv_episode(
+        self, tmdbid: int, season_number: int, episode_number: int
+    ) -> TVEpisodeResponse:
+        """获取剧集单集详细信息
+
+        Args:
+            tmdbid: 剧集的TMDB ID
+            season_number: 季数
+            episode_number: 集数
+
+        Returns:
+            TVEpisodeResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+        """
+        data = self._request(
+            "GET",
+            f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}",
+        )
+
+        return TVEpisodeResponse(
+            tv_show_id=data.get("tv_show_id"),
+            season_number=data.get("season_number"),
+            episode_number=data.get("episode_number"),
+            episode_type=data.get("episode_type"),
+            name=data.get("name"),
+            overview=data.get("overview"),
+            air_date=data.get("air_date"),
+            vote_average=data.get("vote_average"),
+            poseter=data.get("poseter"),
+            runtime=data.get("runtime"),
+            has_magnet=data.get("magnet-flg") == 1,
+            has_ed2k=data.get("ed2k-flg") == 1,
+        )
+
+    def get_tv_episode_magnet(
+        self, tmdbid: int, season_number: int, episode_number: int
+    ) -> TVEpisodeMagnetResponse:
+        """获取剧集单集磁力资源
+
+        Args:
+            tmdbid: 剧集的TMDB ID
+            season_number: 季数
+            episode_number: 集数
+
+        Returns:
+            TVEpisodeMagnetResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+
+        data = self._request(
+            "GET",
+            f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}/magnet",
+        )
+
+        items = [
+            MovieMagnetItem(
+                name=item.get("name"),
+                size=item.get("size"),
+                magnet=item.get("magnet"),
+                resolution=item.get("resolution"),
+                source=item.get("source"),
+                quality=item.get("quality"),
+                zh_sub=item.get("zh_sub"),
+            )
+            for item in data.get("magnet", [])
+        ]
+
+        return TVEpisodeMagnetResponse(
+            tv_show_id=data.get("tv_show_id"),
+            season_number=data.get("season_number"),
+            episode_number=data.get("episode_number"),
+            media_type=data.get("media_type"),
+            magnet=items,
         )

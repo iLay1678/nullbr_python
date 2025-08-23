@@ -90,6 +90,22 @@ def create_parser() -> argparse.ArgumentParser:
     tv_video_parser.add_argument("season", type=int, help="Season number")
     tv_video_parser.add_argument("episode", type=int, help="Episode number")
 
+    # TV episode info command
+    tv_episode_parser = subparsers.add_parser(
+        "tv-episode", help="Get TV episode information"
+    )
+    tv_episode_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+    tv_episode_parser.add_argument("season", type=int, help="Season number")
+    tv_episode_parser.add_argument("episode", type=int, help="Episode number")
+
+    # TV episode magnet command
+    tv_episode_magnet_parser = subparsers.add_parser(
+        "tv-episode-magnet", help="Get TV episode magnet resources"
+    )
+    tv_episode_magnet_parser.add_argument("tmdbid", type=int, help="TMDB ID")
+    tv_episode_magnet_parser.add_argument("season", type=int, help="Season number")
+    tv_episode_magnet_parser.add_argument("episode", type=int, help="Episode number")
+
     return parser
 
 
@@ -120,6 +136,10 @@ def main():
             result = sdk.get_movie_video(args.tmdbid)
         elif args.command == "tv-episode-video":
             result = sdk.get_tv_episode_video(args.tmdbid, args.season, args.episode)
+        elif args.command == "tv-episode":
+            result = sdk.get_tv_episode(args.tmdbid, args.season, args.episode)
+        elif args.command == "tv-episode-magnet":
+            result = sdk.get_tv_episode_magnet(args.tmdbid, args.season, args.episode)
         else:
             print(f"Unknown command: {args.command}")
             sys.exit(1)

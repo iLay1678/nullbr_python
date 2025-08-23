@@ -96,6 +96,12 @@ nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-ed2k 78
 # 获取剧集单集ed2k资源
 nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-ed2k 1396 1 3
 
+# 获取剧集单集信息
+nullbr --app-id YOUR_APP_ID tv-episode 1396 1 3
+
+# 获取剧集单集磁力资源
+nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-magnet 1396 1 3
+
 # 获取电影video资源（m3u8/http）
 nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-video 78
 
@@ -120,6 +126,12 @@ python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-ed2k 78
 
 # 获取剧集单集ed2k资源
 python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-ed2k 1396 1 3
+
+# 获取剧集单集信息
+python -m nullbr --app-id YOUR_APP_ID tv-episode 1396 1 3
+
+# 获取剧集单集磁力资源
+python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-magnet 1396 1 3
 
 # 获取电影video资源（m3u8/http）
 python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-video 78
@@ -504,6 +516,89 @@ sdk = NullbrSDK(
 }
 ```
 
+##### get_tv_episode(tmdbid, season_number, episode_number)
+
+获取剧集单集详细信息
+
+**参数：**
+- `tmdbid` (int): 剧集的TMDB ID
+- `season_number` (int): 季数
+- `episode_number` (int): 集数
+
+**返回：** `TVEpisodeResponse` 对象
+
+```python
+{
+    "tv_show_id": 1396,
+    "season_number": 1,
+    "episode_number": 3,
+    "episode_type": "standard",
+    "name": "袋在河里",
+    "overview": "沃尔特收拾第一次毒品交易后留下的残局，而斯凯勒即将了解到他的双重人生真相。",
+    "air_date": "2008-02-10",
+    "vote_average": 8.327,
+    "poseter": "/dLgiPZCVamFcaa7Gaqudrldj15h.jpg",
+    "runtime": 49,
+    "has_magnet": True,  # magnet-flg == 1
+    "has_ed2k": True     # ed2k-flg == 1
+}
+```
+
+##### get_tv_episode_magnet(tmdbid, season_number, episode_number)
+
+获取剧集单集磁力资源
+
+**参数：**
+- `tmdbid` (int): 剧集的TMDB ID
+- `season_number` (int): 季数
+- `episode_number` (int): 集数
+
+**返回：** `TVEpisodeMagnetResponse` 对象
+
+```python
+{
+    "tv_show_id": 1396,
+    "season_number": 1,
+    "episode_number": 3,
+    "media_type": "tv",
+    "magnet": [
+        {
+            "name": "[美国AMC剧情][绝命毒师.第一季][S01E03][HR RMVB][双语字幕][YYeTs人人影视]",
+            "size": "0.71 GB",
+            "magnet": "magnet:?xt=urn:btih:0239a1b91d4a2237e841e26a786cfc3729b5f8cc",
+            "resolution": null,
+            "source": null,
+            "quality": "High Resolution",
+            "zh_sub": 1
+        },
+        {
+            "name": "Breaking Bad S01E03 FRENCH DVDRip XviD ANONYMOUS",
+            "size": "0.35 GB",
+            "magnet": "magnet:?xt=urn:btih:5212eac5d2725d5f8948a2de5c6a82a6808f544d",
+            "resolution": null,
+            "source": "DVD",
+            "quality": "Rip",
+            "zh_sub": 0
+        },
+        {
+            "name": "Breaking.Bad.S01E03.HDTV.XviD-LOL",
+            "size": "0.34 GB",
+            "magnet": "magnet:?xt=urn:btih:67bb8b09d892d698132b73ec81a9c3e65923e1a5",
+            "resolution": null,
+            "source": "HDTV",
+            "quality": null,
+            "zh_sub": 0
+        }
+    ]
+}
+```
+
+**资源说明：**
+- 磁力资源按照是否包含中文字幕区分，从大到小排序
+- 返回最多5个磁力资源
+- 优先返回头两个最大的有中文字幕资源
+- 再返回头三个最大的非中文字幕资源
+
 #### 合集功能
 
 ##### get_collection(tmdbid)
@@ -557,8 +652,10 @@ sdk = NullbrSDK(
 | `search` | 搜索媒体内容 | `<query> [--page]` | ❌ |
 | `movie` | 获取电影信息 | `<tmdbid>` | ❌ |
 | `tv` | 获取电视剧信息 | `<tmdbid>` | ❌ |
+| `tv-episode` | 获取剧集单集信息 | `<tmdbid> <season> <episode>` | ❌ |
 | `movie-ed2k` | 获取电影ed2k资源 | `<tmdbid>` | ✅ |
 | `tv-episode-ed2k` | 获取剧集单集ed2k资源 | `<tmdbid> <season> <episode>` | ✅ |
+| `tv-episode-magnet` | 获取剧集单集磁力资源 | `<tmdbid> <season> <episode>` | ✅ |
 | `movie-video` | 获取电影video资源 | `<tmdbid>` | ✅ |
 | `tv-episode-video` | 获取剧集单集video资源 | `<tmdbid> <season> <episode>` | ✅ |
 
@@ -572,14 +669,18 @@ export NULLBR_API_KEY="your_api_key"
 # 使用全局命令（推荐）
 nullbr --app-id $NULLBR_APP_ID search "权力的游戏"
 nullbr --app-id $NULLBR_APP_ID movie 299536
+nullbr --app-id $NULLBR_APP_ID tv-episode 1396 1 3
 nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY movie-ed2k 78
 nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY tv-episode-ed2k 1396 1 3
+nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY tv-episode-magnet 1396 1 3
 
 # 或者使用Python模块方式
 python -m nullbr --app-id $NULLBR_APP_ID search "权力的游戏"
 python -m nullbr --app-id $NULLBR_APP_ID movie 299536
+python -m nullbr --app-id $NULLBR_APP_ID tv-episode 1396 1 3
 python -m nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY movie-ed2k 78
 python -m nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY tv-episode-ed2k 1396 1 3
+python -m nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY tv-episode-magnet 1396 1 3
 python -m nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY movie-video 78
 python -m nullbr --app-id $NULLBR_APP_ID --api-key $NULLBR_API_KEY tv-episode-video 1396 3 4
 ```
@@ -677,6 +778,25 @@ python -m nullbr --app-id YOUR_APP_ID search "复仇者联盟" | jq '.items[0].t
 }
 ```
 
+#### TVEpisodeResponse
+剧集单集信息响应
+```python
+{
+    "tv_show_id": int,          # 电视剧ID
+    "season_number": int,       # 季数
+    "episode_number": int,      # 集数
+    "episode_type": str,        # 集类型（"standard"等）
+    "name": str,                # 集名称
+    "overview": str,            # 集简介
+    "air_date": str,            # 播出日期
+    "vote_average": float,      # 评分
+    "poseter": str,             # 海报路径
+    "runtime": int,             # 时长（分钟）
+    "has_magnet": bool,         # 是否有磁力资源
+    "has_ed2k": bool           # 是否有ed2k资源
+}
+```
+
 ### 资源模型
 
 #### Movie115Item / TV115Item
@@ -767,6 +887,30 @@ def main():
             print(f"   大小: {resource.size}")
             print(f"   分辨率: {resource.resolution}")
             print(f"   来源: {resource.source}")
+            print(f"   中文字幕: {'是' if resource.zh_sub else '否'}")
+            print()
+    
+    # 获取剧集单集信息
+    print("\n=== 剧集单集信息 ===")
+    episode = sdk.get_tv_episode(1396, 1, 3)  # 绝命毒师 S01E03
+    print(f"剧集: {episode.name}")
+    print(f"第{episode.season_number}季第{episode.episode_number}集")
+    print(f"简介: {episode.overview}")
+    print(f"播出日期: {episode.air_date}")
+    print(f"评分: {episode.vote_average}")
+    print(f"时长: {episode.runtime}分钟")
+    print(f"有磁力资源: {episode.has_magnet}")
+    print(f"有ed2k资源: {episode.has_ed2k}")
+    
+    # 获取剧集单集磁力资源
+    if episode.has_magnet:
+        print("\n=== 剧集单集磁力资源 ===")
+        episode_magnet = sdk.get_tv_episode_magnet(1396, 1, 3)
+        for i, resource in enumerate(episode_magnet.magnet[:2], 1):
+            print(f"{i}. {resource.name}")
+            print(f"   大小: {resource.size}")
+            print(f"   来源: {resource.source}")
+            print(f"   质量: {resource.quality}")
             print(f"   中文字幕: {'是' if resource.zh_sub else '否'}")
             print()
     
@@ -871,6 +1015,19 @@ uv build
 5. 开启 Pull Request
 
 ## 更新日志
+
+### v1.0.6
+
+- ✅ **新增剧集单集信息功能**：`get_tv_episode()` - 获取剧集单集详细信息
+  - 📺 支持获取单集名称、简介、播出日期、评分、时长等详细信息
+  - 🔍 返回单集的资源可用性标识（磁力、ed2k等）
+- ✅ **新增剧集单集磁力资源功能**：`get_tv_episode_magnet()` - 获取剧集单集磁力资源
+  - 🧲 支持获取单集的磁力链接资源
+  - 📋 按中文字幕分类排序，返回最多5个资源
+  - 🎯 优先返回有中文字幕的资源
+- ✅ **扩展CLI命令**：新增 `tv-episode` 和 `tv-episode-magnet` 命令
+- ✅ 完善API文档和使用示例
+- ✅ 向后兼容，所有原有功能保持不变
 
 ### v1.0.5
 
