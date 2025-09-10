@@ -5,12 +5,16 @@ hide-toc: true
 ```{include} ../README.md
 :relative-docs: docs/
 :relative-images:
+:start-after: <!-- start readme -->
+:end-before: <!-- end readme -->
 ```
 
 ```{toctree}
 :hidden:
+reference/quickstart
 reference/api
 reference/examples
+reference/update
 ```
 
 ```{toctree}

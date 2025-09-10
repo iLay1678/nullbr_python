@@ -1,5 +1,5 @@
+<!-- start readme -->
 # nullbr
-
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/nullbr)
 ![PyPI - Version](https://img.shields.io/pypi/v/nullbr)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/nullbr)
@@ -7,41 +7,6 @@
 ![PyPI - Status](https://img.shields.io/pypi/status/nullbr)
 
 Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK
-
-## 功能特性
-
-- 🔍 搜索电影、电视剧、合集和人物
-- 🎬 获取电影详细信息和资源链接（115网盘、磁力、ed2k、video）
-- 📺 获取电视剧详细信息和资源链接（115网盘、磁力、ed2k、video）
-- 📚 获取合集信息和资源链接
-- 🎯 支持剧集季度和单集资源获取
-- 🛠️ 完整的命令行工具支持
-- 🔄 内置HTTP重试机制，提高请求可靠性
-- 🔒 MIT 许可证
-
-## 安装
-
-### 使用 uv 安装（推荐）
-
-```bash
-uv add nullbr
-```
-
-### 使用 [pip](https://pypi.org/project/nullbr/) 安装
-
-```bash
-pip install nullbr
-```
-
-### 从源码安装
-
-```bash
-git clone https://github.com/iLay1678/nullbr-python.git
-cd nullbr
-uv sync
-uv pip install -e .
-```
-
 
 ## 文档
 
@@ -69,6 +34,43 @@ except httpx.HTTPError as e:
 except ValueError as e:
     print(f"参数错误: {e}")
 ```
+## 功能特性
+
+- 🔍 搜索电影、电视剧、合集和人物
+- 🎬 获取电影详细信息和资源链接（115网盘、磁力、ed2k、video）
+- 📺 获取电视剧详细信息和资源链接（115网盘、磁力、ed2k、video）
+- 📚 获取合集信息和资源链接
+- 🎯 支持剧集季度和单集资源获取
+- 🛠️ 完整的命令行工具支持
+- 🔄 内置HTTP重试机制，提高请求可靠性
+- 🔒 MIT 许可证
+
+<!-- end readme -->
+
+<!-- start quickstart -->
+## 安装
+### 使用 uv 安装（推荐）
+
+```bash
+uv add nullbr
+```
+
+### 使用 [pip](https://pypi.org/project/nullbr/) 安装
+
+```bash
+pip install nullbr
+```
+
+### 从源码安装
+
+```bash
+git clone https://github.com/iLay1678/nullbr-python.git
+cd nullbr
+uv sync
+uv pip install -e .
+```
+<!-- end quickstart -->
+
 
 ## 开发
 
@@ -119,8 +121,8 @@ uv build
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 开启 Pull Request
 
+<!-- start update -->
 ## 更新日志
-
 ### v1.0.7
 
 - 🔧 **代码重构**：TV相关响应类不再使用Movie的响应类
@@ -171,3 +173,5 @@ uv build
 - ✅ 支持搜索、电影、电视剧、合集信息获取
 - ✅ 支持115、磁力、ed2k资源获取
 - ✅ 提供完整的命令行工具
+
+<!-- end update -->
