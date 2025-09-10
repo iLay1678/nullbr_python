@@ -1,8 +1,6 @@
-# examples
+# 使用示例
 
-## 使用示例
-
-### 基本用法
+## 基本用法
 
 ```python
 import os
@@ -100,9 +98,9 @@ if __name__ == "__main__":
     main()
 ```
 
-### 命令行使用
+## 命令行使用
 
-#### 方式一：使用全局命令（推荐）
+### 方式一：使用全局命令（推荐）
 
 安装后可直接使用 `nullbr` 命令：
 
@@ -135,7 +133,7 @@ nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-video 78
 nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-video 1396 3 4
 ```
 
-#### 方式二：使用Python模块
+### 方式二：使用Python模块
 
 ```bash
 # 搜索
@@ -166,7 +164,7 @@ python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY movie-video 78
 python -m nullbr --app-id YOUR_APP_ID --api-key YOUR_API_KEY tv-episode-video 1396 3 4
 ```
 
-#### 方式三：使用uv运行
+### 方式三：使用uv运行
 
 ```bash
 # 搜索

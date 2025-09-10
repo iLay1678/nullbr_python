@@ -9,8 +9,8 @@ hide-toc: true
 
 ```{toctree}
 :hidden:
-reference/examples
 reference/api
+reference/examples
 ```
 
 ```{toctree}
