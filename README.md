@@ -71,7 +71,7 @@ uv pip install -e .
 ```
 <!-- end quickstart -->
 
-
+<!-- start contributing -->
 ## 开发
 
 ### 安装开发依赖
@@ -104,7 +104,7 @@ uv run pytest
 ```bash
 uv build
 ```
-
+<!-- end contributing -->
 ## 许可证
 
 本项目采用 MIT 许可证。详情请见 [LICENSE](https://github.com/iLay1678/nullbr_python/blob/main/LICENSE) 文件。
@@ -121,7 +121,7 @@ uv build
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 开启 Pull Request
 
-<!-- start update -->
+<!-- start changelog -->
 ## 更新日志
 ### v1.0.7
 
@@ -174,4 +174,4 @@ uv build
 - ✅ 支持115、磁力、ed2k资源获取
 - ✅ 提供完整的命令行工具
 
-<!-- end update -->
+<!-- end changelog -->
