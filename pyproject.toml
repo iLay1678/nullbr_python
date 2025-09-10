@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nullbr"
+version = "1.0.7"
+description = "Python SDK for Nullbr API - 用于访问 Nullbr API 的 Python SDK"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "iLay1678", email = "ifwangs400@gmail.com"},
+]
+maintainers = [
+    {name = "iLay1678", email = "ifwangs400@gmail.com"},
+]
+keywords = ["nullbr", "api", "sdk", "movies", "tv", "tmdb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Video",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "httpx[http2,socks]>=0.28.1",
+    "python-dotenv>=1.1.0",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/iLay1678/nullbr_python"
+Documentation = "https://nullbr_python.readthedocs.io/"
+Repository = "https://github.com/iLay1678/nullbr_python"
+"Bug Tracker" = "https://github.com/iLay1678/nullbr_python/issues"
+
+[project.scripts]
+nullbr = "nullbr.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nullbr"]
+
+[tool.ruff]
+# 目标 Python 版本
+target-version = "py39"
+# 行长度
+line-length = 88
+
+[tool.ruff.lint]
+# 启用的规则
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+# 忽略的规则
+ignore = [
+    "E501",  # line too long, handled by black
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0",
+    "sphinx>=7.4.7",
+    "sphinx-book-theme>=1.1.4",
+    "myst-parser>=2.0.0,<4.0.0",
+    "sphinx-copybutton>=0.5.2",
+]
+
+
