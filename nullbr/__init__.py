@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "1.0.7"
+__version__ = "v1.0.8"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -73,9 +73,10 @@ class NullbrSDK:
         self,
         app_id: str,
         api_key: str = None,
-        base_url: str = "https://api.nullbr.eu.org",
+        base_url: str = "https://nullbr.com/",
         max_retries: int = 3,
         backoff_factor: float = 1.0,
+        user_agent: str = None
     ):
         """
         初始化 Nullbr SDK
@@ -83,9 +84,10 @@ class NullbrSDK:
         Args:
             app_id: App ID
             api_key: API Key (可选，获取具体资源时需要)
-            base_url: base URL (default: https://api.nullbr.eu.org)
+            base_url: base URL (default: https://nullbr.com/)
             max_retries: 最大重试次数 (default: 3)
-            backoff_factor: 重试的指数等待时间 单位秒 (default: 1.0)"""
+            backoff_factor: 重试的指数等待时间 单位秒 (default: 1.0)
+            user_agent: 自定义User-Agent (default: NULLBR_PYTHON/version)"""
         self.app_id = app_id
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
@@ -96,7 +98,12 @@ class NullbrSDK:
         self.retry_status_codes = {429, 500, 502, 503, 504, 408}
 
         self.session = httpx.Client()
-        self.session.headers.update({"X-APP-ID": app_id})
+        self.session.headers.update(
+            {
+                "X-APP-ID": app_id,
+                "User-Agent": user_agent or f"NULLBR_PYTHON/{__version__}",
+            }
+        )
         if api_key:
             self.session.headers.update({"X-API-KEY": api_key})
 

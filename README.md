@@ -123,6 +123,13 @@ uv build
 
 <!-- start changelog -->
 ## 更新日志
+### v1.0.8
+
+- 🔧 **默认配置更新**：默认 API 域名更改为 `https://nullbr.com/`，添加默认 User-Agent `nullbr/version`
+- ✨ **新增特性**：支持自定义 User-Agent
+  - 🛠️ `NullbrSDK` 初始化新增 `user_agent` 参数，支持自定义请求头 User-Agent
+- 📝 更新了项目文档和版本号
+
 ### v1.0.7
 
 - 🔧 **代码重构**：TV相关响应类不再使用Movie的响应类
