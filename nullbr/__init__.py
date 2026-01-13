@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "v1.0.8"
+__version__ = "v1.0.9"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -73,10 +73,10 @@ class NullbrSDK:
         self,
         app_id: str,
         api_key: str = None,
-        base_url: str = "https://nullbr.com/",
+        base_url: str = "https://api.nullbr.com/",
         max_retries: int = 3,
         backoff_factor: float = 1.0,
-        user_agent: str = None
+        user_agent: str = None,
     ):
         """
         初始化 Nullbr SDK
@@ -84,7 +84,7 @@ class NullbrSDK:
         Args:
             app_id: App ID
             api_key: API Key (可选，获取具体资源时需要)
-            base_url: base URL (default: https://nullbr.com/)
+            base_url: base URL (default: https://api.nullbr.com/)
             max_retries: 最大重试次数 (default: 3)
             backoff_factor: 重试的指数等待时间 单位秒 (default: 1.0)
             user_agent: 自定义User-Agent (default: NULLBR_PYTHON/version)"""
