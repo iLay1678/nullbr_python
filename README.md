@@ -123,6 +123,18 @@ uv build
 
 <!-- start changelog -->
 ## 更新日志
+### v1.0.10
+
+- 🔧 **修复**：修正 `TVSeasonResponse` 和 `TVEpisodeResponse` 中的 `poseter` 字段拼写为 `poster`，并提供双字段解析向下兼容
+- ✨ **新增特性**：对接了用户订阅与配额相关接口
+  - 👤 新增 `UserInfoResponse` 与 `UserRedeemResponse` 数据模型
+  - 🛠️ `NullbrSDK` 新增 `get_user_info()` 方法以获取用户订阅信息与配额
+  - 🛠️ `NullbrSDK` 新增 `redeem_user_code(code)` 方法以支持提示码兑换
+
+### v1.0.9
+
+- 🔧 修复及其他功能改进
+
 ### v1.0.8
 
 - 🔧 **默认配置更新**：默认 API 域名更改为 `https://nullbr.com/`，添加默认 User-Agent `nullbr/version`

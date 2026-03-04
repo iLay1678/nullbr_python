@@ -76,7 +76,8 @@ class TVSeasonResponse:
     name: str  #: 季度名称
     overview: str  #: 季度简介
     air_date: str  #: 播出日期
-    poseter: str  #: 海报图片URL（注意：可能是拼写错误，应为poster）
+    poster: str  #: 海报图片URL
+    poseter: str  #: 海报图片URL（兼容旧版本拼写错误，等同于poster）
     episode_count: int  #: 集数
     vote_average: float  #: 平均评分
     has_magnet: bool  #: 是否有磁力链接
@@ -115,7 +116,8 @@ class TVEpisodeResponse:
     overview: str  #: 剧集简介
     air_date: str  #: 播出日期
     vote_average: float  #: 评分
-    poseter: str  #: 海报图片URL（注意：可能是拼写错误，应为poster）
+    poster: str  #: 海报图片URL
+    poseter: str  #: 海报图片URL（兼容旧版本拼写错误，等同于poster）
     runtime: int  #: 运行时长（分钟）
     has_magnet: bool  #: 是否有磁力链接
     has_ed2k: bool  #: 是否有ed2k链接

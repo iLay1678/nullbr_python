@@ -34,6 +34,7 @@ from .tv import (
     TVSeasonResponse,
     TVVideoItem,
 )
+from .user import UserInfoResponse, UserRedeemResponse
 
 __all__ = [
     "MediaItem",
@@ -61,4 +62,6 @@ __all__ = [
     "TVVideoItem",
     "CollectionResponse",
     "Collection115Response",
+    "UserInfoResponse",
+    "UserRedeemResponse",
 ]

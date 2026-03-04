@@ -5,7 +5,7 @@ A Python SDK for accessing the Nullbr API to search and retrieve information
 about movies, TV shows, collections, and their resources.
 """
 
-__version__ = "v1.0.9"
+__version__ = "v1.0.10"
 __author__ = "nullbr"
 __license__ = "MIT"
 
@@ -40,6 +40,7 @@ from .models.tv import (
     TVSeasonResponse,
     TVVideoItem,
 )
+from .models.user import UserInfoResponse, UserRedeemResponse
 
 # 导出主要的类和函数
 __all__ = [
@@ -65,6 +66,8 @@ __all__ = [
     "TVVideoItem",
     "CollectionResponse",
     "Collection115Response",
+    "UserInfoResponse",
+    "UserRedeemResponse",
 ]
 
 
@@ -549,13 +552,15 @@ class NullbrSDK:
             "GET", f"{self.base_url}/tv/{tmdbid}/season/{season_number}"
         )
 
+        poster_val = data.get("poster") or data.get("poseter")
         return TVSeasonResponse(
             tv_show_id=data.get("tv_show_id"),
             season_number=data.get("season_number"),
             name=data.get("name"),
             overview=data.get("overview"),
             air_date=data.get("air_date"),
-            poseter=data.get("poseter"),
+            poster=poster_val,
+            poseter=poster_val,
             episode_count=data.get("episode_count"),
             vote_average=data.get("vote_average"),
             has_magnet=data.get("magnet-flg") == 1,
@@ -740,6 +745,7 @@ class NullbrSDK:
             f"{self.base_url}/tv/{tmdbid}/season/{season_number}/episode/{episode_number}",
         )
 
+        poster_val = data.get("poster") or data.get("poseter")
         return TVEpisodeResponse(
             tv_show_id=data.get("tv_show_id"),
             season_number=data.get("season_number"),
@@ -749,7 +755,8 @@ class NullbrSDK:
             overview=data.get("overview"),
             air_date=data.get("air_date"),
             vote_average=data.get("vote_average"),
-            poseter=data.get("poseter"),
+            poster=poster_val,
+            poseter=poster_val,
             runtime=data.get("runtime"),
             has_magnet=data.get("magnet-flg") == 1,
             has_ed2k=data.get("ed2k-flg") == 1,
@@ -800,3 +807,98 @@ class NullbrSDK:
             media_type=data.get("media_type"),
             magnet=items,
         )
+
+    def get_user_info(self) -> UserInfoResponse:
+        """获取当前用户的订阅信息和配额使用情况
+
+        Returns:
+            UserInfoResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+
+        response = self._request("GET", f"{self.base_url}/user/info")
+        data = response.get("data", {})
+
+        return UserInfoResponse(
+            sub_name=data.get("sub_name", ""),
+            expires_at=data.get("expires_at"),
+            daily_used=data.get("daily_used", 0),
+            daily_quota=data.get("daily_quota", 0),
+            monthly_used=data.get("monthly_used", 0),
+            monthly_quota=data.get("monthly_quota", 0),
+        )
+
+    def redeem_user_code(self, code: str) -> UserRedeemResponse:
+        """使用提示码兑换订阅升级
+
+        Args:
+            code: 提示码
+
+        Returns:
+            UserRedeemResponse 对象
+
+        Raises:
+            requests.exceptions.HTTPError: 当API返回非200状态码时
+            ValueError: 当未设置API KEY时
+        """
+        if not self.api_key:
+            raise ValueError("API KEY is required for this operation")
+
+        # 这个接口使用 POST 请求，并传递 JSON 数据
+        # 需要确保内部 _request 可以处理 data / json
+        import logging
+
+        logger = logging.getLogger(__name__)
+
+        last_exception = None
+        for attempt in range(self.max_retries + 1):
+            try:
+                url = f"{self.base_url}/user/redeem"
+                logger.info(f"Requesting POST {url} (attempt {attempt + 1})")
+                response = self.session.request("POST", url, json={"code": code})
+                if response.is_success:
+                    return UserRedeemResponse(
+                        success=True,
+                        message=response.json().get("message", ""),
+                        sub_name=response.json().get("data", {}).get("sub_name"),
+                        expires_at=response.json().get("data", {}).get("expires_at"),
+                    )
+                else:
+                    try:
+                        resp_json = response.json()
+                        if "success" in resp_json and resp_json["success"] is False:
+                            return UserRedeemResponse(
+                                success=False,
+                                message=resp_json.get("message", "请求失败"),
+                            )
+                    except Exception:
+                        pass
+
+                # Check for retriable codes
+                if response.status_code in self.retry_status_codes:
+                    if attempt < self.max_retries:
+                        wait_time = self.backoff_factor * (2**attempt)
+                        import time
+
+                        time.sleep(wait_time)
+                        continue
+                response.raise_for_status()
+            except Exception as e:
+                import httpx
+
+                if isinstance(e, httpx.RequestError):
+                    last_exception = e
+                    if attempt < self.max_retries:
+                        wait_time = self.backoff_factor * (2**attempt)
+                        import time
+
+                        time.sleep(wait_time)
+                        continue
+                raise
+        if last_exception:
+            raise last_exception
