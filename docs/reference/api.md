@@ -66,3 +66,12 @@
    :show-inheritance:
    :inherited-members:
 ```
+### 用户模型
+
+```{eval-rst}
+.. automodule:: nullbr.models.user
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+```
